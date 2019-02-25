@@ -36,6 +36,16 @@
           <param name="vcsRootId" value="DemoApp_HttpsGithubComDanelyanDemoAppRefsHeadsMaster" />
         </parameters>
       </extension>
+      <extension id="BUILD_EXT_2" type="commit-status-publisher">
+        <parameters>
+          <param name="github_authentication_type" value="token" />
+          <param name="github_host" value="https://api.github.com" />
+          <param name="github_oauth_user" value="danelyan" />
+          <param name="publisherId" value="githubStatusPublisher" />
+          <param name="secure:github_access_token" value="credentialsJSON:1d09c09b-074a-4fa5-8259-3a95b31eef05" />
+          <param name="vcsRootId" value="DemoApp_HttpsGithubComDanelyanDemoAppRefsHeadsMaster" />
+        </parameters>
+      </extension>
     </build-extensions>
     <cleanup />
   </settings>
