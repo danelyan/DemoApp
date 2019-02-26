@@ -5,7 +5,7 @@
   <settings>
     <parameters />
     <build-runners>
-      <runner id="RUNNER_1" name="" type="gradle-runner">
+      <runner id="RUNNER_1" name="Build And Test" type="gradle-runner">
         <parameters>
           <param name="teamcity.coverage.jacoco.classpath" value="+:target/main/java/**" />
           <param name="teamcity.coverage.runner" value="JACOCO" />
