@@ -34,7 +34,7 @@
         <parameters>
           <param name="script.content"><![CDATA[echo %build.number%
 echo %system.teamcity.projectName%
-curl -F chat_id="28385144" -F document=@"app/build/outputs/apk/debug/app-debug.apk" https://api.telegram.org/bot642064790:AAHFlRyRIXEiju3lRg80L_FHW-d529w6Oso/sendDocument]]></param>
+curl -F chat_id="28385144" -F document="@app/build/outputs/apk/debug/app-debug.apk" http://city.advicemytrip.com/bot642064790:AAHFlRyRIXEiju3lRg80L_FHW-d529w6Oso/sendDocument]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
