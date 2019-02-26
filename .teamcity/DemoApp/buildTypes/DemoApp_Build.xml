@@ -3,6 +3,9 @@
   <name>Build Pull Request</name>
   <description />
   <settings>
+    <options>
+      <option name="artifactRules" value="app/build/outputs =&gt; app/build/outputs&#xA;app/build/outputs/apk/debug/app-debug.apk" />
+    </options>
     <parameters />
     <build-runners>
       <runner id="RUNNER_1" name="Build And Test" type="gradle-runner">
