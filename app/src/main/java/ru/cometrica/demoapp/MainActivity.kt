@@ -10,9 +10,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sum = BusinessLogic().plus(100, 200)
+        val sum = BusinessLogic().plus(a, b)
         Toast.makeText(this, "Sum == $sum", Toast.LENGTH_LONG)
             .show()
+    }
+
+    companion object {
+        const val a = 100
+        const val b = 200
     }
 
 }
