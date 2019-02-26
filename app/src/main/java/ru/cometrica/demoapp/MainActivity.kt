@@ -11,5 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Log.d("!!!", "HELLO WORLD")
+
+        val aa = 10
     }
 }
