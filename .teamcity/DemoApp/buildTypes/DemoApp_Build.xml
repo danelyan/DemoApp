@@ -4,7 +4,7 @@
   <description />
   <settings>
     <options>
-      <option name="artifactRules" value="app/build/outputs =&gt; app/build/outputs&#xA;app/build/outputs/apk/debug/app-debug.apk" />
+      <option name="artifactRules" value="app/build/outputs/apk =&gt; app/build/outputs/apk" />
     </options>
     <parameters />
     <build-runners>
