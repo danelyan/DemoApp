@@ -4,7 +4,7 @@
   <description />
   <settings>
     <options>
-      <option name="artifactRules" value="app/build/outputs/apk =&gt; app/build/outputs/apk" />
+      <option name="artifactRules" value="app/build/outputs/apk/debug/app-debug.apk&#xA;extra/reports/detekt.html" />
     </options>
     <parameters />
     <build-runners>
