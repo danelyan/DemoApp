@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Demo App</string>
+    <string name="change_text">Change text</string>
+    <string name="clicked_text_state">Clicked</string>
 </resources>

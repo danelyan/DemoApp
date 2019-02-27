@@ -25,7 +25,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
@@ -39,8 +38,10 @@ detekt {
     config = files("$projectDir/extra/detekt.yml")
     reports {
         html {
-            enabled = true // Enable/Disable HTML report (default: true)
-            destination = file("$projectDir/app/build/reports/detekt.html") // Path where HTML report will be stored (default: `build/reports/detekt/detekt.html`)
+            enabled = true
+            // Enable/Disable HTML report (default: true)
+            destination = file("$projectDir/app/build/reports/detekt.html")
+            // Path where HTML report will be stored (default: `build/reports/detekt/detekt.html`)
         }
     }
     filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
