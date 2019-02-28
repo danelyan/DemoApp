@@ -16,12 +16,12 @@ class TestButtonClick {
     @JvmField
     var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
-    @Test
-    fun checkButtonClicked() {
-        clickOn(R.id.button)
-        assertDisplayed(R.id.textView)
-        assertContains(R.id.textView, "Clicked")
-    }
+//    @Test
+//    fun checkButtonClicked() {
+//        clickOn(R.id.button)
+//        assertDisplayed(R.id.textView)
+//        assertContains(R.id.textView, "Clicked")
+//    }
 
 }
 
