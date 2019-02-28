@@ -12,3 +12,9 @@ data class Document(
     val path: String,
     val author: Author
 )
+
+data class Address(
+    val address: String,
+    val latitude: Double,
+    val longitude: Double
+)

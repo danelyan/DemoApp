@@ -1,61 +1,40 @@
 package ru.cometrica.demoapp.data
 
-import java.util.ArrayList
-import java.util.HashMap
+import ru.cometrica.demoapp.domain.Author
+import ru.cometrica.demoapp.domain.Document
+import java.util.*
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- *
- * TODO: Replace all uses of this class before publishing your app.
- */
 object DummyContent {
 
-    /**
-     * An array of sample (dummy) items.
-     */
-    val ITEMS: MutableList<DummyItem> = ArrayList()
+    private const val COUNT = 25
+    private const val AUTHOR_ID = 10L
 
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
-
-    private val COUNT = 25
+    val ITEMS: MutableList<Document> = ArrayList()
+    val ITEM_MAP: MutableMap<Long, Document> = HashMap()
 
     init {
-        // Add some sample items.
-        for (i in 1..COUNT) {
+        for (i in 1L..COUNT)
             addItem(createDummyItem(i))
-        }
     }
 
-    private fun addItem(item: DummyItem) {
+    private fun addItem(item: Document) {
         ITEMS.add(item)
-        ITEM_MAP.put(item.id, item)
+        ITEM_MAP[item.id] = item
     }
 
-    private fun createDummyItem(position: Int): DummyItem {
-        return DummyItem(
-            position.toString(),
-            "Item " + position,
-            makeDetails(position)
+    private fun createDummyItem(position: Long) =
+        Document(
+            position, "Item $position", makeDetails(position),
+            Author(AUTHOR_ID, "Fred", "Wilson")
         )
-    }
 
-    private fun makeDetails(position: Int): String {
+    private fun makeDetails(position: Long): String {
         val builder = StringBuilder()
         builder.append("Details about Item: ").append(position)
-        for (i in 0..position - 1) {
+        for (i in 0 until position) {
             builder.append("\nMore details information here.")
         }
         return builder.toString()
     }
 
-    /**
-     * A dummy item representing a piece of content.
-     */
-    data class DummyItem(val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
-    }
 }

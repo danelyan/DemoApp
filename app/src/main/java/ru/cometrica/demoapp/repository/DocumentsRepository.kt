@@ -2,7 +2,7 @@ package ru.cometrica.demoapp.repository
 
 import io.reactivex.Completable
 import io.reactivex.subjects.BehaviorSubject
-import ru.cometrica.demoapp.domain.Author
+import ru.cometrica.demoapp.data.DummyContent
 import ru.cometrica.demoapp.domain.Document
 
 class DocumentsRepository {
@@ -11,19 +11,12 @@ class DocumentsRepository {
         BehaviorSubject.create<List<Document>>()
 
     fun streamDocuments(authorId: Long) =
-        dataCache.hide()//.map { list -> list.filter { it.author.authorId == authorId } }
+        dataCache.hide()
 
 
     fun syncDocuments(authorId: Long) =
         Completable.fromCallable {
-            dataCache.onNext(
-                listOf(
-                    Document(1L, "name", "path", Author(10L, "Anton", "Berg")),
-                    Document(2L, "name", "path", Author(10L, "Anton", "Berg")),
-                    Document(3L, "name", "path", Author(10L, "Anton", "Berg")),
-                    Document(4L, "name", "path", Author(10L, "Anton", "Berg"))
-                )
-            )
+            dataCache.onNext(DummyContent.ITEMS)
         }
 
 }

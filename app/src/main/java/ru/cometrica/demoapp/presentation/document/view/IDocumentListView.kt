@@ -8,8 +8,7 @@ interface IDocumentListView {
     fun showDocumentListError(it: Throwable?)
     fun showAuthorIdError()
     fun showSomeError()
-
     fun refreshClick(): Observable<Unit>
     fun authorIdFieldChange(): Observable<String>
+    fun showAddress(it: String)
 }
-

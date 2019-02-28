@@ -9,6 +9,7 @@ import io.reactivex.subjects.BehaviorSubject
 import ru.cometrica.demoapp.domain.author.AuthorInteractor
 import ru.cometrica.demoapp.domain.document.StreamDocumentListInteractor
 import ru.cometrica.demoapp.domain.document.SyncDocumentListInteractor
+import ru.cometrica.demoapp.domain.location.CurrentLocationInteractor
 import ru.cometrica.demoapp.presentation.BasePresenter
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 import ru.cometrica.demoapp.presentation.document.view.IDocumentListView
@@ -18,6 +19,7 @@ class DocumentListPresenter(
     private val view: IDocumentListView,
     private val getDocumentListInteractor: StreamDocumentListInteractor,
     private val syncDocumentListInteractor: SyncDocumentListInteractor,
+    private val currentLocationInteractor: CurrentLocationInteractor,
     authorInteractor: AuthorInteractor
 ) : BasePresenter() {
 
@@ -32,54 +34,65 @@ class DocumentListPresenter(
         )
 
     override fun onInit() {
-
-        disposables +=
-            Observables.combineLatest(view.refreshClick(), rxAuthorId)
-                .flatMapSingle {
-                    syncDocumentListInteractor
-                        .syncDocumentList(it.second)
-                        .toSingleDefault(it.second)
-                }
-                .subscribe(
-                    { Log.i("DocumentListPresenter", "Documents for author $it synced") },
-                    { error -> Log.e("DocumentListPresenter", "Error syncing docs on click", error) }
-                )
-
-        disposables +=
-            view.authorIdFieldChange()
-                .debounce(DEBOUNCE_TYPING_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .map { it.toLongOrNull() ?: -1 }
-                .subscribe(
-                    {
-                        if (it < 0) view.showAuthorIdError()
-                        else authorIdSubject.onNext(it)
-                    },
-                    {
-                        it.printStackTrace()
-                        view.showSomeError()
-                    }
-                )
-
-        disposables +=
-            rxAuthorId
-                .flatMap { getDocumentListInteractor.streamDocumentList(it) }
-                .map { documents ->
-                    documents.map {
-                        DocumentViewModel("${it.author.name} ${it.author.surname}", it.name)
-                    }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { view.showDocuments(it) },
-                    { view.showDocumentListError(it) }
-                )
+        disposables += subscribeRefreshClick()
+        disposables += subscribeAuthorIdTextChanges()
+        disposables += subscribeDocumentChanges()
+        disposables += subscribeLocation()
     }
 
     override fun onDestroy() {
         disposables.dispose()
     }
 
+    private fun subscribeRefreshClick() =
+        Observables.combineLatest(view.refreshClick(), rxAuthorId)
+            .flatMapSingle { (_, authorId) ->
+                syncDocumentListInteractor
+                    .syncDocumentList(authorId)
+                    .toSingleDefault(authorId)
+            }
+            .subscribe(
+                { Log.i("DocumentListPresenter", "Documents for author $it synced") },
+                { error -> Log.e("DocumentListPresenter", "Error syncing docs on click", error) }
+            )
+
+    private fun subscribeDocumentChanges() =
+        rxAuthorId
+            .flatMap { getDocumentListInteractor.streamDocumentList(it) }
+            .map { documents ->
+                documents.map {
+                    DocumentViewModel("${it.author.name} ${it.author.surname}", it.name)
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { view.showDocuments(it) },
+                { view.showDocumentListError(it) }
+            )
+
+    private fun subscribeAuthorIdTextChanges() =
+        view.authorIdFieldChange()
+            .debounce(DEBOUNCE_TYPING_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+            .map { it.toLongOrNull() ?: -1 }
+            .subscribe(
+                {
+                    if (it < 0) view.showAuthorIdError()
+                    else authorIdSubject.onNext(it)
+                },
+                {
+                    it.printStackTrace()
+                    view.showSomeError()
+                })
+
+    private fun subscribeLocation() =
+        currentLocationInteractor.streamLocation()
+            .map { it.address }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { view.showAddress(it) }
+
+
     companion object {
         const val DEBOUNCE_TYPING_DELAY = 200L
     }
+
 }
