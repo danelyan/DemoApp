@@ -14,14 +14,14 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_document_list.*
 import kotlinx.android.synthetic.main.fragment_document_list.view.*
 import ru.cometrica.demoapp.R
+import ru.cometrica.demoapp.data.repository.DocumentsRepository
 import ru.cometrica.demoapp.device.LocationManagerImpl
-import ru.cometrica.demoapp.domain.author.AuthorInteractor
+import ru.cometrica.demoapp.domain.author.GetCurrentAuthor
 import ru.cometrica.demoapp.domain.document.StreamDocumentList
 import ru.cometrica.demoapp.domain.document.SyncDocumentList
 import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 import ru.cometrica.demoapp.presentation.document.presenter.DocumentListPresenter
-import ru.cometrica.demoapp.data.repository.DocumentsRepository
 
 class DocumentListFragment : Fragment(), DocumentListView {
 
@@ -30,7 +30,7 @@ class DocumentListFragment : Fragment(), DocumentListView {
         context?.let {
             DocumentListPresenter(
                 view = this,
-                authorInteractor = AuthorInteractor(),
+                getCurrentAuthor = GetCurrentAuthor(),
                 getDocumentList = StreamDocumentList(rep),
                 syncDocumentList = SyncDocumentList(rep),
                 streamCurrentLocation = StreamCurrentLocation(LocationManagerImpl(it))

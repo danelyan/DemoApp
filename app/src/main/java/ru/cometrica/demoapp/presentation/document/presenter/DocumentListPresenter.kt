@@ -7,7 +7,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
-import ru.cometrica.demoapp.domain.author.AuthorInteractor
+import ru.cometrica.demoapp.domain.author.GetCurrentAuthor
 import ru.cometrica.demoapp.domain.document.StreamDocumentList
 import ru.cometrica.demoapp.domain.document.SyncDocumentList
 import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
@@ -21,7 +21,7 @@ class DocumentListPresenter(
     private val getDocumentList: StreamDocumentList,
     private val syncDocumentList: SyncDocumentList,
     private val streamCurrentLocation: StreamCurrentLocation,
-    authorInteractor: AuthorInteractor
+    getCurrentAuthor: GetCurrentAuthor
 ) : BasePresenter() {
 
     private var disposables = CompositeDisposable()
@@ -29,8 +29,8 @@ class DocumentListPresenter(
     private var rxAuthorId: Observable<Long> = authorIdSubject.hide()
         .switchIfEmpty(
             // try to get current authorId, do nothing if empty
-            authorInteractor
-                .getCurrentAuthorId()
+            getCurrentAuthor
+                .build()
                 .toObservable()
         )
 
