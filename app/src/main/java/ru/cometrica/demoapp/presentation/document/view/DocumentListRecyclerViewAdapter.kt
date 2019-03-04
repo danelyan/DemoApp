@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.recycler_view_item.view.*
 import ru.cometrica.demoapp.R
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 
-class MyDocumentListRecyclerViewAdapter : RecyclerView.Adapter<MyDocumentListRecyclerViewAdapter.ViewHolder>() {
+class DocumentListRecyclerViewAdapter : RecyclerView.Adapter<DocumentListRecyclerViewAdapter.ViewHolder>() {
 
     var data: List<DocumentViewModel> = listOf()
         set(value) {

@@ -14,16 +14,16 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_document_list.*
 import kotlinx.android.synthetic.main.fragment_document_list.view.*
 import ru.cometrica.demoapp.R
-import ru.cometrica.demoapp.device.LocationManager
+import ru.cometrica.demoapp.device.LocationManagerImpl
 import ru.cometrica.demoapp.domain.author.AuthorInteractor
-import ru.cometrica.demoapp.domain.document.StreamDocumentListInteractor
-import ru.cometrica.demoapp.domain.document.SyncDocumentListInteractor
-import ru.cometrica.demoapp.domain.location.CurrentLocationInteractor
+import ru.cometrica.demoapp.domain.document.StreamDocumentList
+import ru.cometrica.demoapp.domain.document.SyncDocumentList
+import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 import ru.cometrica.demoapp.presentation.document.presenter.DocumentListPresenter
-import ru.cometrica.demoapp.repository.DocumentsRepository
+import ru.cometrica.demoapp.data.repository.DocumentsRepository
 
-class DocumentListFragment : Fragment(), IDocumentListView {
+class DocumentListFragment : Fragment(), DocumentListView {
 
     private val presenter: DocumentListPresenter? by lazy {
         val rep = DocumentsRepository()
@@ -31,9 +31,9 @@ class DocumentListFragment : Fragment(), IDocumentListView {
             DocumentListPresenter(
                 view = this,
                 authorInteractor = AuthorInteractor(),
-                getDocumentListInteractor = StreamDocumentListInteractor(rep),
-                syncDocumentListInteractor = SyncDocumentListInteractor(rep),
-                currentLocationInteractor = CurrentLocationInteractor(LocationManager(it))
+                getDocumentList = StreamDocumentList(rep),
+                syncDocumentList = SyncDocumentList(rep),
+                streamCurrentLocation = StreamCurrentLocation(LocationManagerImpl(it))
                 //FIXME USE DI
             )
         }
@@ -48,7 +48,7 @@ class DocumentListFragment : Fragment(), IDocumentListView {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_document_list, container, false)
-        view.listDocuments.adapter = MyDocumentListRecyclerViewAdapter()
+        view.listDocuments.adapter = DocumentListRecyclerViewAdapter()
         view.listDocuments.layoutManager = when {
             columnCount <= 1 -> LinearLayoutManager(context)
             else -> GridLayoutManager(context, columnCount)
@@ -67,7 +67,7 @@ class DocumentListFragment : Fragment(), IDocumentListView {
     }
 
     override fun showDocuments(items: List<DocumentViewModel>) {
-        (view?.listDocuments?.adapter as MyDocumentListRecyclerViewAdapter).data = items
+        (view?.listDocuments?.adapter as DocumentListRecyclerViewAdapter).data = items
     }
 
     override fun showDocumentListError(it: Throwable?) {

@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import io.reactivex.Observable
 import ru.cometrica.demoapp.domain.Address
-import ru.cometrica.demoapp.domain.ILocationManager
+import ru.cometrica.demoapp.domain.LocationManager
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
-class LocationManager(context: Context) : ILocationManager {
+class LocationManagerImpl(context: Context) : LocationManager {
 
     private val random = Random(RANDOM_SEED)
     private val hotLocation = Observable.timer(LOCATION_DELAY, TimeUnit.SECONDS)

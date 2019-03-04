@@ -1,8 +1,8 @@
-package ru.cometrica.demoapp.repository
+package ru.cometrica.demoapp.data.repository
 
 import io.reactivex.Completable
 import io.reactivex.subjects.BehaviorSubject
-import ru.cometrica.demoapp.data.DummyContent
+import ru.cometrica.demoapp.data.cache.DummyContent
 import ru.cometrica.demoapp.domain.Document
 
 class DocumentsRepository {

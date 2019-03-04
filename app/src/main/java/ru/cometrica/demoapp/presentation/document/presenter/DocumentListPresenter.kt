@@ -1,31 +1,32 @@
 package ru.cometrica.demoapp.presentation.document.presenter
 
 import android.util.Log
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
 import ru.cometrica.demoapp.domain.author.AuthorInteractor
-import ru.cometrica.demoapp.domain.document.StreamDocumentListInteractor
-import ru.cometrica.demoapp.domain.document.SyncDocumentListInteractor
-import ru.cometrica.demoapp.domain.location.CurrentLocationInteractor
+import ru.cometrica.demoapp.domain.document.StreamDocumentList
+import ru.cometrica.demoapp.domain.document.SyncDocumentList
+import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
 import ru.cometrica.demoapp.presentation.BasePresenter
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
-import ru.cometrica.demoapp.presentation.document.view.IDocumentListView
+import ru.cometrica.demoapp.presentation.document.view.DocumentListView
 import java.util.concurrent.TimeUnit
 
 class DocumentListPresenter(
-    private val view: IDocumentListView,
-    private val getDocumentListInteractor: StreamDocumentListInteractor,
-    private val syncDocumentListInteractor: SyncDocumentListInteractor,
-    private val currentLocationInteractor: CurrentLocationInteractor,
+    private val view: DocumentListView,
+    private val getDocumentList: StreamDocumentList,
+    private val syncDocumentList: SyncDocumentList,
+    private val streamCurrentLocation: StreamCurrentLocation,
     authorInteractor: AuthorInteractor
 ) : BasePresenter() {
 
     private var disposables = CompositeDisposable()
     private var authorIdSubject = BehaviorSubject.create<Long>()
-    private var rxAuthorId = authorIdSubject.hide()
+    private var rxAuthorId: Observable<Long> = authorIdSubject.hide()
         .switchIfEmpty(
             // try to get current authorId, do nothing if empty
             authorInteractor
@@ -47,8 +48,8 @@ class DocumentListPresenter(
     private fun subscribeRefreshClick() =
         Observables.combineLatest(view.refreshClick(), rxAuthorId)
             .flatMapSingle { (_, authorId) ->
-                syncDocumentListInteractor
-                    .syncDocumentList(authorId)
+                syncDocumentList
+                    .build(authorId)
                     .toSingleDefault(authorId)
             }
             .subscribe(
@@ -58,7 +59,7 @@ class DocumentListPresenter(
 
     private fun subscribeDocumentChanges() =
         rxAuthorId
-            .flatMap { getDocumentListInteractor.streamDocumentList(it) }
+            .flatMap { getDocumentList.build(it) }
             .map { documents ->
                 documents.map {
                     DocumentViewModel("${it.author.name} ${it.author.surname}", it.name)
@@ -85,7 +86,7 @@ class DocumentListPresenter(
                 })
 
     private fun subscribeLocation() =
-        currentLocationInteractor.streamLocation()
+        streamCurrentLocation.build()
             .map { it.address }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { view.showAddress(it) }
