@@ -13,31 +13,14 @@ import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_document_list.*
 import kotlinx.android.synthetic.main.fragment_document_list.view.*
+import org.koin.android.ext.android.inject
 import ru.cometrica.demoapp.R
-import ru.cometrica.demoapp.data.repository.DocumentsRepository
-import ru.cometrica.demoapp.device.LocationManagerImpl
-import ru.cometrica.demoapp.domain.author.GetCurrentAuthor
-import ru.cometrica.demoapp.domain.document.StreamDocumentList
-import ru.cometrica.demoapp.domain.document.SyncDocumentList
-import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 import ru.cometrica.demoapp.presentation.document.presenter.DocumentListPresenter
 
 class DocumentListFragment : Fragment(), DocumentListView {
 
-    private val presenter: DocumentListPresenter? by lazy {
-        val rep = DocumentsRepository()
-        context?.let {
-            DocumentListPresenter(
-                view = this,
-                getCurrentAuthor = GetCurrentAuthor(),
-                getDocumentList = StreamDocumentList(rep),
-                syncDocumentList = SyncDocumentList(rep),
-                streamCurrentLocation = StreamCurrentLocation(LocationManagerImpl(it))
-                //FIXME USE DI
-            )
-        }
-    }
+    private val presenter: DocumentListPresenter by inject()
 
     private val columnCount by lazy {
         arguments?.getInt(ARG_COLUMN_COUNT, DEFAULT_COLUMN_COUNT) ?: DEFAULT_COLUMN_COUNT
@@ -58,12 +41,12 @@ class DocumentListFragment : Fragment(), DocumentListView {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        presenter?.onInit()
+        presenter.onAttachView(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        presenter?.onDestroy()
+        presenter.onDetachView()
     }
 
     override fun showDocuments(items: List<DocumentViewModel>) {

@@ -17,12 +17,11 @@ import ru.cometrica.demoapp.presentation.document.view.DocumentListView
 import java.util.concurrent.TimeUnit
 
 class DocumentListPresenter(
-    private val view: DocumentListView,
     private val getDocumentList: StreamDocumentList,
     private val syncDocumentList: SyncDocumentList,
     private val streamCurrentLocation: StreamCurrentLocation,
     getCurrentAuthor: GetCurrentAuthor
-) : BasePresenter() {
+) : BasePresenter<DocumentListView>() {
 
     private var disposables = CompositeDisposable()
     private var authorIdSubject = BehaviorSubject.create<Long>()
@@ -34,19 +33,25 @@ class DocumentListPresenter(
                 .toObservable()
         )
 
-    override fun onInit() {
+    override fun onAttachView(view: DocumentListView) {
+        super.onAttachView(view)
         disposables += subscribeRefreshClick()
         disposables += subscribeAuthorIdTextChanges()
         disposables += subscribeDocumentChanges()
         disposables += subscribeLocation()
+
     }
 
-    override fun onDestroy() {
+    override fun onDetachView() {
+        super.onDetachView()
         disposables.dispose()
     }
 
     private fun subscribeRefreshClick() =
-        Observables.combineLatest(view.refreshClick(), rxAuthorId)
+        Observables.combineLatest(
+            view?.refreshClick() ?: throw IllegalStateException("DocumentListPresenter must be subscribed"),
+            rxAuthorId
+        )
             .flatMapSingle { (_, authorId) ->
                 syncDocumentList
                     .build(authorId)
@@ -67,29 +72,29 @@ class DocumentListPresenter(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { view.showDocuments(it) },
-                { view.showDocumentListError(it) }
+                { view?.showDocuments(it) },
+                { view?.showDocumentListError(it) }
             )
 
     private fun subscribeAuthorIdTextChanges() =
-        view.authorIdFieldChange()
+        (view?.authorIdFieldChange() ?: throw IllegalStateException(""))
             .debounce(DEBOUNCE_TYPING_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
             .map { it.toLongOrNull() ?: -1 }
             .subscribe(
                 {
-                    if (it < 0) view.showAuthorIdError()
+                    if (it < 0) view?.showAuthorIdError()
                     else authorIdSubject.onNext(it)
                 },
                 {
                     it.printStackTrace()
-                    view.showSomeError()
+                    view?.showSomeError()
                 })
 
     private fun subscribeLocation() =
         streamCurrentLocation.build()
             .map { it.address }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { view.showAddress(it) }
+            .subscribe { view?.showAddress(it) }
 
 
     companion object {
