@@ -1,13 +1,17 @@
 package ru.cometrica.demoapp.presentation
 
-open class BasePresenter {
+open class BasePresenter<V> {
 
-    open fun onInit() {}
+    protected var view: V? = null
 
-    open fun onPause() {}
+    open fun onAttachView(view: V) {
+        this.view = view
+    }
 
-    open fun onDestroy() {}
+    open fun onDetachView() {
+        this.view = null
+    }
 
-    open fun onResume() {}
+    fun getViewOrThrow() = view ?: throw IllegalStateException("Presenter must be attached")
 
 }

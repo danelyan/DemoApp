@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
 //    implementation 'com.patloew.rxlocation:rxlocation:1.0.5'
+    implementation 'org.koin:koin-android:2.0.0-beta-1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'

@@ -7,7 +7,8 @@ import ru.cometrica.demoapp.domain.InteractorParametrized
 /**
  * Update cache by syncing with cloud service.
  */
-class SyncDocumentList(private val repository: DocumentsRepository) : InteractorParametrized<Long, Completable> {
+class SyncDocumentList(private val repository: DocumentsRepository) :
+    InteractorParametrized<Long, Completable> {
 
     override fun build(param: Long): Completable =
         repository.syncDocuments(param)
