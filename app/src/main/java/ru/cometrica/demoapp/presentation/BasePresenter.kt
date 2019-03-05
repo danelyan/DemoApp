@@ -12,4 +12,6 @@ open class BasePresenter<V> {
         this.view = null
     }
 
+    fun getViewOrThrow() = view ?: throw IllegalStateException("Presenter must be attached")
+
 }

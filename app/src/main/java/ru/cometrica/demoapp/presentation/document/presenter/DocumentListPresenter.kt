@@ -48,10 +48,7 @@ class DocumentListPresenter(
     }
 
     private fun subscribeRefreshClick() =
-        Observables.combineLatest(
-            view?.refreshClick() ?: throw IllegalStateException("DocumentListPresenter must be subscribed"),
-            rxAuthorId
-        )
+        Observables.combineLatest(getViewOrThrow().refreshClick(), rxAuthorId)
             .flatMapSingle { (_, authorId) ->
                 syncDocumentList
                     .build(authorId)
@@ -77,7 +74,7 @@ class DocumentListPresenter(
             )
 
     private fun subscribeAuthorIdTextChanges() =
-        (view?.authorIdFieldChange() ?: throw IllegalStateException(""))
+        getViewOrThrow().authorIdFieldChange()
             .debounce(DEBOUNCE_TYPING_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
             .map { it.toLongOrNull() ?: -1 }
             .subscribe(

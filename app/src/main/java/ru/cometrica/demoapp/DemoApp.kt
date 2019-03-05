@@ -14,7 +14,6 @@ class DemoApp : Application() {
             androidLogger()
             androidContext(this@DemoApp)
             modules(appModule)
-            androidLogger()
         }
 
     }
