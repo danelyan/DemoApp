@@ -1,4 +1,4 @@
-package ru.cometrica.demoapp.data
+package ru.cometrica.demoapp.data.cache
 
 import ru.cometrica.demoapp.domain.Author
 import ru.cometrica.demoapp.domain.Document
