@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.apollographql.android'
 
 android {
     compileSdkVersion 28
@@ -16,6 +17,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "AUTH_TOKEN", "\"8c08d34526ee3d72e44ae31896c29b969c99649d\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.github.com/graphql\"")
+        }
+
+        debug {
+            minifyEnabled false
+            buildConfigField("String", "AUTH_TOKEN", "\"8c08d34526ee3d72e44ae31896c29b969c99649d\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.github.com/graphql\"")
         }
     }
     sourceSets {
@@ -48,7 +57,7 @@ dependencies {
 //    implementation 'com.patloew.rxlocation:rxlocation:1.0.5'
     implementation 'org.koin:koin-android:2.0.0-beta-1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
+    implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     testImplementation 'junit:junit:4.12'
 
     androidTestImplementation 'androidx.test:runner:1.1.1'
@@ -68,4 +77,12 @@ dependencies {
         exclude group: 'com.android.support.test.uiautomator', module: 'uiautomator-v18'
     }
 
+}
+
+apollo {
+    customTypeMapping = [
+            "URI" : "java.net.URI",
+            "Date": "java.util.Date",
+            "DateTime": "java.util.Date"
+    ]
 }

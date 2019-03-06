@@ -1,16 +1,23 @@
 package ru.cometrica.demoapp.presentation.document.presenter
 
 import android.util.Log
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import ru.cometrica.demoapp.domain.author.GetCurrentAuthor
 import ru.cometrica.demoapp.domain.document.StreamDocumentList
 import ru.cometrica.demoapp.domain.document.SyncDocumentList
 import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
+import ru.cometrica.demoapp.graphql.FindQuery
 import ru.cometrica.demoapp.presentation.BasePresenter
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 import ru.cometrica.demoapp.presentation.document.view.DocumentListView
@@ -20,6 +27,7 @@ class DocumentListPresenter(
     private val getDocumentList: StreamDocumentList,
     private val syncDocumentList: SyncDocumentList,
     private val streamCurrentLocation: StreamCurrentLocation,
+    private val apollo: ApolloClient,
     getCurrentAuthor: GetCurrentAuthor
 ) : BasePresenter<DocumentListView>() {
 
@@ -39,8 +47,32 @@ class DocumentListPresenter(
         disposables += subscribeAuthorIdTextChanges()
         disposables += subscribeDocumentChanges()
         disposables += subscribeLocation()
-
+        disposables += findRepo() // FIXME remove
     }
+
+    private fun findRepo() =
+        Single
+            .create<FindQuery.Data> { emitter ->
+                apollo
+                    .query(FindQuery.builder().name("DemoApp").owner("danelyan").build())
+                    .enqueue(
+                        object : ApolloCall.Callback<FindQuery.Data>() {
+                            override fun onFailure(e: ApolloException) {
+                                emitter.onError(e)
+                            }
+
+                            override fun onResponse(response: Response<FindQuery.Data>) {
+                                response.data()?.let { emitter.onSuccess(it) }
+                                    ?: emitter.onError(NullPointerException("Response data are empty"))
+                            }
+
+                        })
+            }
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                { Log.d("!!!", it.toString()) },
+                { Log.e("!!!", "", it) }
+            )
 
     override fun onDetachView() {
         super.onDetachView()
