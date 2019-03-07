@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.apollographql.android'
 
 android {
@@ -17,13 +18,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "AUTH_TOKEN", "\"da6a5c79f8c4aa93c11f013c9960c4897604c8f9\"")
+            buildConfigField("String", "AUTH_TOKEN", "\"24015636724c7526e9221d990883668f8a53e298\"")
             buildConfigField("String", "BASE_URL", "\"https://api.github.com/graphql\"")
         }
 
         debug {
             minifyEnabled false
-            buildConfigField("String", "AUTH_TOKEN", "\"da6a5c79f8c4aa93c11f013c9960c4897604c8f9\"")
+            buildConfigField("String", "AUTH_TOKEN", "\"24015636724c7526e9221d990883668f8a53e298\"")
             buildConfigField("String", "BASE_URL", "\"https://api.github.com/graphql\"")
         }
     }
@@ -58,6 +59,10 @@ dependencies {
     implementation 'org.koin:koin-android:2.0.0-beta-1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
+
+    implementation "me.lazmaid.kraph:kraph:0.6.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.10.0"
+
     testImplementation 'junit:junit:4.12'
 
     androidTestImplementation 'androidx.test:runner:1.1.1'
@@ -81,8 +86,8 @@ dependencies {
 
 apollo {
     customTypeMapping = [
-            "URI" : "java.net.URI",
-            "Date": "java.util.Date",
+            "URI"     : "java.net.URI",
+            "Date"    : "java.util.Date",
             "DateTime": "java.util.Date"
     ]
 }

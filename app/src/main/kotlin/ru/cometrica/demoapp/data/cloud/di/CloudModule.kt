@@ -7,8 +7,8 @@ import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import ru.cometrica.demoapp.BuildConfig
 import ru.cometrica.demoapp.data.cloud.GithubCloudDataSource
-import ru.cometrica.demoapp.data.cloud.apollo.ApolloGithubCloudDataSource
 import ru.cometrica.demoapp.data.cloud.apollo.type.CustomType
+import ru.cometrica.demoapp.data.cloud.kraph.KraphGithubCloudDataSource
 import java.net.URI
 
 val cloudModule = module {
@@ -46,6 +46,7 @@ val cloudModule = module {
             .build()
     }
 
-    single<GithubCloudDataSource> { ApolloGithubCloudDataSource(get()) }
+//    single<GithubCloudDataSource> { ApolloGithubCloudDataSource(get()) }
+    single<GithubCloudDataSource> { KraphGithubCloudDataSource(get()) }
 
 }
