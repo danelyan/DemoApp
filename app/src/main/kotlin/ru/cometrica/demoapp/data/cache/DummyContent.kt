@@ -1,7 +1,7 @@
 package ru.cometrica.demoapp.data.cache
 
-import ru.cometrica.demoapp.domain.Author
-import ru.cometrica.demoapp.domain.Document
+import ru.cometrica.demoapp.domain.model.Author
+import ru.cometrica.demoapp.domain.model.Document
 import java.util.*
 
 object DummyContent {

@@ -4,6 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import ru.cometrica.demoapp.data.cloud.di.cloudModule
 import ru.cometrica.demoapp.di.appModule
 
 class DemoApp : Application() {
@@ -13,7 +14,7 @@ class DemoApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@DemoApp)
-            modules(appModule)
+            modules(appModule, cloudModule)
         }
 
     }

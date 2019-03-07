@@ -10,6 +10,8 @@ import io.reactivex.subjects.BehaviorSubject
 import ru.cometrica.demoapp.domain.author.GetCurrentAuthor
 import ru.cometrica.demoapp.domain.document.StreamDocumentList
 import ru.cometrica.demoapp.domain.document.SyncDocumentList
+import ru.cometrica.demoapp.domain.github.FindGitHubRepo
+import ru.cometrica.demoapp.domain.github.FindGitHubRepoParam
 import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
 import ru.cometrica.demoapp.presentation.BasePresenter
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
@@ -20,6 +22,7 @@ class DocumentListPresenter(
     private val getDocumentList: StreamDocumentList,
     private val syncDocumentList: SyncDocumentList,
     private val streamCurrentLocation: StreamCurrentLocation,
+    private val findGitHubRepo: FindGitHubRepo,
     getCurrentAuthor: GetCurrentAuthor
 ) : BasePresenter<DocumentListView>() {
 
@@ -39,8 +42,16 @@ class DocumentListPresenter(
         disposables += subscribeAuthorIdTextChanges()
         disposables += subscribeDocumentChanges()
         disposables += subscribeLocation()
-
+        disposables += findRepo() // FIXME remove
     }
+
+    private fun findRepo() =
+        findGitHubRepo
+            .build(FindGitHubRepoParam("DemoApp", "danelyan"))
+            .subscribe(
+                { Log.d("!!!", it.toString()) },
+                { Log.e("!!!", "", it) }
+            )
 
     override fun onDetachView() {
         super.onDetachView()

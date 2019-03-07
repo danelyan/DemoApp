@@ -2,7 +2,7 @@ package ru.cometrica.demoapp.domain.document
 
 import io.reactivex.Observable
 import ru.cometrica.demoapp.data.repository.DocumentsRepository
-import ru.cometrica.demoapp.domain.Document
+import ru.cometrica.demoapp.domain.model.Document
 import ru.cometrica.demoapp.domain.InteractorParametrized
 
 /**
