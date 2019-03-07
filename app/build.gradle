@@ -17,13 +17,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "AUTH_TOKEN", "\"8c08d34526ee3d72e44ae31896c29b969c99649d\"")
+            buildConfigField("String", "AUTH_TOKEN", "\"da6a5c79f8c4aa93c11f013c9960c4897604c8f9\"")
             buildConfigField("String", "BASE_URL", "\"https://api.github.com/graphql\"")
         }
 
         debug {
             minifyEnabled false
-            buildConfigField("String", "AUTH_TOKEN", "\"8c08d34526ee3d72e44ae31896c29b969c99649d\"")
+            buildConfigField("String", "AUTH_TOKEN", "\"da6a5c79f8c4aa93c11f013c9960c4897604c8f9\"")
             buildConfigField("String", "BASE_URL", "\"https://api.github.com/graphql\"")
         }
     }

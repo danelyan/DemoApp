@@ -4,7 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import ru.cometrica.demoapp.data.cache.DummyContent
-import ru.cometrica.demoapp.domain.Document
+import ru.cometrica.demoapp.domain.model.Document
 
 interface DocumentsRepository {
     fun streamDocuments(authorId: Long): Observable<List<Document>>
