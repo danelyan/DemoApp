@@ -3,4 +3,8 @@
     <string name="change_text">Change text</string>
     <string name="clicked_text_state">Clicked</string>
     <string name="sync_documents">Sync Documents</string>
+
+    <!-- Errors -->
+    <string name="error_unknown">Sorry, something went wrong.</string>
+    <string name="error_internet_not_available">Please, check your Internet connection.</string>
 </resources>

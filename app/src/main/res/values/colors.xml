@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="primary">#008577</color>
+    <color name="primary_dark">#00574B</color>
+    <color name="accent">#D81B60</color>
+
+    <color name="dark_text">@color/md_black_1000</color>
+    <color name="light_text">@color/md_white_1000</color>
+
+    <color name="disabled">@color/md_grey_200</color>
+    <color name="status_bar">@color/primary_dark</color>
+    <color name="action_bar">@color/primary</color>
+    <color name="light_background">@color/md_white_1000</color>
+    <color name="navigation">@color/md_white_1000</color>
+
+    <color name="confirm">@color/md_green_400</color>
+    <color name="info">@color/md_blue_400</color>
+    <color name="warning">@color/md_orange_400</color>
+    <color name="alert">@color/md_red_400</color>
+
+    <color name="snackbar_text">@color/md_white_1000</color>
+
 </resources>

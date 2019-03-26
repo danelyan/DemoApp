@@ -13,7 +13,7 @@ import ru.cometrica.demoapp.domain.document.SyncDocumentList
 import ru.cometrica.demoapp.domain.github.FindGitHubRepo
 import ru.cometrica.demoapp.domain.github.FindGitHubRepoParam
 import ru.cometrica.demoapp.domain.location.StreamCurrentLocation
-import ru.cometrica.demoapp.presentation.BasePresenter
+import ru.cometrica.demoapp.presentation.common.BasePresenter
 import ru.cometrica.demoapp.presentation.document.model.DocumentViewModel
 import ru.cometrica.demoapp.presentation.document.view.DocumentListView
 import java.util.concurrent.TimeUnit
